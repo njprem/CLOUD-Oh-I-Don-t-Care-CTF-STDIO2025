@@ -13,7 +13,6 @@ jobs:
     permissions:
       id-token: write
       contents: read
-
     steps:
       - name: Configure AWS via OIDC
         uses: aws-actions/configure-aws-credentials@v4
@@ -21,12 +20,10 @@ jobs:
           role-to-assume: arn:aws:iam::694502195928:role/admin-godmode-flag-reader-lol-698875
           role-session-name: GH-GrabFlag
           aws-region: ap-southeast-1
+          audience: sts.amazonaws.com
 
       - name: Prove identity
         run: aws sts get-caller-identity
 
-      - name: Read & show flag (no masking)
-        run: |
-          aws s3 cp s3://oh-i-really-do-care/flag.txt ./flag.txt
-          echo "========== FLAG =========="
-          cat ./flag.txt
+      - name: Print RAW flag (no masking)
+        run: aws s3 cp s3://oh-i-really-do-care/flag.txt -
